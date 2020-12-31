@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pdf/widgets.dart' as pw;
 
 class Home extends StatefulWidget {
   @override
@@ -11,6 +12,15 @@ class _HomeState extends State<Home> {
     return Scaffold(
       appBar: AppBar(
         title: Text("meetIn"),
+        centerTitle: true,
+        actions: <Widget>[
+          IconButton(
+              icon: Icon(Icons.file_copy),
+              onPressed: (){
+                _makePDF();
+              }
+          ),
+        ],
       ),
       body: SafeArea(
         child: ListView(
@@ -23,6 +33,48 @@ class _HomeState extends State<Home> {
     );
   }
 
+  void _makePDF(){
+
+    final pdf = pw.Document();
+
+    pdf.addPage(
+        pw.MultiPage(
+          pageFormat: PdfPageFormat.a4,
+          margin: pw.EdgeInsets.all(32),
+
+          build: (pw.Context context){
+            return <pw.Widget>  [
+              pw.Header(
+                  level: 0,
+                  child: pw.Text('Easy Approach Document')
+              ),
+              pw.Paragraph(
+                  text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Malesuada fames ac turpis egestas sed tempus urna. Quisque sagittis purus sit amet. A arcu cursus vitae congue mauris rhoncus aenean vel elit. Ipsum dolor sit amet consectetur adipiscing elit pellentesque. Viverra justo nec ultrices dui sapien eget mi proin sed.'
+              ),
+              pw.Paragraph(
+                  text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Malesuada fames ac turpis egestas sed tempus urna. Quisque sagittis purus sit amet. A arcu cursus vitae congue mauris rhoncus aenean vel elit. Ipsum dolor sit amet consectetur adipiscing elit pellentesque. Viverra justo nec ultrices dui sapien eget mi proin sed.'
+              ),
+            ];
+          },
+
+        )
+    );
+
+    Directory documentDirectory = await getApplicationDocumentsDirectory();
+
+    //Directory documentDirectory = await getExternalStorageDirectory();
+
+    String documentPath = documentDirectory.path;
+    print(documentDirectory.path);
+
+    File file = File("$documentPath/example.pdf");
+    print(file);
+
+    file.writeAsBytesSync(pdf.save());
+    print('success!');
+
+
+  }
 }
 
 class _ScreenSection extends StatefulWidget {
@@ -34,7 +86,7 @@ class __ScreenSectionState extends State<_ScreenSection> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height /2.5,
+      height: MediaQuery.of(context).size.height / 2.5,
       padding: EdgeInsets.all(3),
       child: Row(
         children: <Widget>[
@@ -43,8 +95,10 @@ class __ScreenSectionState extends State<_ScreenSection> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                imageProfile('https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F99BC644E5B725CA734'),
-                imageProfile('https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F99BC644E5B725CA734'),
+                imageProfile(
+                    'https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F99BC644E5B725CA734'),
+                imageProfile(
+                    'https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F99BC644E5B725CA734'),
               ],
             ),
           ),
@@ -87,14 +141,12 @@ class __ScreenSectionState extends State<_ScreenSection> {
   }
 }
 
-
 class _InputSection extends StatefulWidget {
   @override
   __InputSectionState createState() => __InputSectionState();
 }
 
 class __InputSectionState extends State<_InputSection> {
-
   TextEditingController messageController = TextEditingController();
 
   @override
@@ -115,9 +167,7 @@ class __InputSectionState extends State<_InputSection> {
           IconButton(
             icon: Icon(
               Icons.send,
-              color: messageController.text.isEmpty
-                  ? Colors.grey
-                  : Colors.blue,
+              color: messageController.text.isEmpty ? Colors.grey : Colors.blue,
             ),
             onPressed: () {
               messageController.clear();
@@ -128,4 +178,3 @@ class __InputSectionState extends State<_InputSection> {
     );
   }
 }
-
