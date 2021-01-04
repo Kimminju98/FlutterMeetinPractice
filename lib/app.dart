@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'chat.dart';
 import 'home.dart';
 
 class MeetinApp extends StatelessWidget {
@@ -13,6 +14,7 @@ class MeetinApp extends StatelessWidget {
       initialRoute: '/home',
       routes: {
         '/home' : (context) => Home(),
+        '/chat': (context) => Chat(),
       },
     );
   }

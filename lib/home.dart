@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
+import 'dart:io';
+
 
 class Home extends StatefulWidget {
   @override
@@ -33,7 +38,7 @@ class _HomeState extends State<Home> {
     );
   }
 
-  void _makePDF(){
+  void _makePDF() async{
 
     final pdf = pw.Document();
 
@@ -60,19 +65,34 @@ class _HomeState extends State<Home> {
         )
     );
 
-    Directory documentDirectory = await getApplicationDocumentsDirectory();
+    print(pdf);
 
-    //Directory documentDirectory = await getExternalStorageDirectory();
-
-    String documentPath = documentDirectory.path;
-    print(documentDirectory.path);
-
-    File file = File("$documentPath/example.pdf");
+    final output = await getExternalStorageDirectory();
+    final file = File("${output.path}/example.pdf");
+    await file.writeAsBytes(pdf.save());
     print(file);
 
-    file.writeAsBytesSync(pdf.save());
-    print('success!');
+    //Send file to Email
+    final Email email = Email(
+      body: 'Email body',
+      subject: 'Email subject',
+      recipients: ['21700097@handong.edu'],
+      //cc : ['cc@example.com'],
+      //bcc: ['bcc@example.com'],
+      attachmentPaths: [file.path],
+      isHTML: false,
+    );
 
+    String platformResponse;
+
+    try {
+      await FlutterEmailSender.send(email);
+      platformResponse = 'success';
+    } catch (error) {
+      platformResponse = error.toString();
+    }
+
+    print(platformResponse);
 
   }
 }
