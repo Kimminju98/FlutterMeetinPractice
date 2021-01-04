@@ -25,6 +25,12 @@ class _HomeState extends State<Home> {
                 _makePDF();
               }
           ),
+          IconButton(
+              icon: Icon(Icons.alarm),
+              onPressed: (){
+                Navigator.pushNamed(context, '/notification');
+              }
+          ),
         ],
       ),
       body: SafeArea(
