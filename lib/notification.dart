@@ -115,7 +115,7 @@ class _NotificationTestState extends State<NotificationTest> {
               onPressed: _showNotificationAtTime,
             ),
             RaisedButton(
-              child: Text('취소'),
+              child: Text('Cancel'),
               onPressed: () => _flutterLocalNotificationsPlugin.cancelAll(),
             ),
           ],
