@@ -9,7 +9,7 @@ class MeetinApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
       ),
-      title: 'Meetin Demo',
+      title: 'Organic Life Demo',
       home: Home(),
       initialRoute: '/home',
       routes: {
